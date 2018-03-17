@@ -21,6 +21,38 @@ const CacheSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+
+/**
+ * Statics
+ */
+CacheSchema.statics = {
+  /**
+   * Get cache
+   * @param key - The key of cache.
+   * @returns {Promise<Cache, null>}
+   */
+  get(key) {
+    return this.findOne({ 'key': key })
+      .exec()
+      .then((cache) => {
+        if (cache) {
+          return cache;
+        }
+        return null;
+      });
+  },
+
+  /**
+   * List cache in descending order of 'createdAt' timestamp.
+   * @returns {Promise<Cache[]>}
+   */
+  list() {
+    return this.find()
+      .sort({ createdAt: -1 })
+      .exec();
+  }
+};
+
 /**
  * @typedef Cache
  */
