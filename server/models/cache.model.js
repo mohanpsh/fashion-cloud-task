@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from '../../config/config';
 
-let randomString = require('random-string');
+const randomString = require('random-string');
 
 /**
  * Cache Schema
@@ -19,7 +19,7 @@ const CacheSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  timeToLive:{
+  timeToLive: {
     type: Date,
     default: Date.now
   }
@@ -37,20 +37,24 @@ CacheSchema.statics = {
   get(key) {
     return this.findOne({ 'key': key })
       .exec()
-      .then((cache) => {
-        if (cache) {
-          if(new Date() > cache.timeToLive) {
+      .then((result) => {
+        const cache = result;
+        if (cache == null) {
+          return null;
+        } else {
+          if (new Date() > cache.timeToLive) {
             // If TTL exceed we update the value
-            cache.value = randomString({length: config.rand_str_len});
+            cache.value = randomString({ length: config.rand_str_len });
           }
-          var ttl = new Date();
+          const ttl = new Date();
           ttl.setSeconds(ttl.getSeconds() + config.ttl_sec);
           // Update TTL every time when we retrive
           cache.timeToLive = ttl;
-          cache.save()
-            .then((savedCache) => {return savedCache });
+          return cache.save()
+            .then((savedCache) => {
+              return savedCache; 
+            });
         }
-        return null;
       });
   },
 

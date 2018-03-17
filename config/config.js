@@ -42,9 +42,9 @@ const config = {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
   },
-  max_record:envVars.MAX_RECORD,
-  ttl_sec:envVars.TTL_SEC,
-  rand_str_len:envVars.RANDOM_STR_LEN
+  max_record: envVars.MAX_RECORD,
+  ttl_sec: envVars.TTL_SEC,
+  rand_str_len: envVars.RANDOM_STR_LEN
 };
 
 export default config;
