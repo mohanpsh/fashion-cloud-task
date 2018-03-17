@@ -19,7 +19,13 @@ const envVarsSchema = Joi.object({
   MONGO_HOST: Joi.string().required()
     .description('Mongo DB host url'),
   MONGO_PORT: Joi.number()
-    .default(27017)
+    .default(27017),
+  MAX_RECORD: Joi.number()
+    .default(10),
+  TTL_SEC: Joi.number()
+    .default(20),
+  RANDOM_STR_LEN: Joi.number()
+    .default(20)
 }).unknown()
   .required();
 
@@ -35,7 +41,10 @@ const config = {
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
-  }
+  },
+  max_record:envVars.MAX_RECORD,
+  ttl_sec:envVars.TTL_SEC,
+  rand_str_len:envVars.RANDOM_STR_LEN
 };
 
 export default config;
